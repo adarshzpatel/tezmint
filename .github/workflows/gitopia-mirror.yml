@@ -17,4 +17,4 @@ jobs:
         uses: gitopia/gitopia-mirror-action@v0.5.0
         with:
           gitopiaWallet: "${{ secrets.GITOPIA_WALLET }}"
-          remoteUrl: "gitopia://gitopia1z9taxqcczzy37pr8ncksjtke9j64h7f8mkt6ah/TezMint---TezAsia-Hackathon-2022"
+          remoteUrl: "gitopia://gitopia1z9taxqcczzy37pr8ncksjtke9j64h7f8mkt6ah/TezMint-TezAsiaHackathon2022"
