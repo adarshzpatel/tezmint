@@ -1,0 +1,9 @@
+{
+  "name":"TezMint",
+  "version": "1.0.0",
+  "description" : "World's most seamless nft minting platform on tezos blockchain.",
+  "imageUri":"ipfs://bafkreie3e34vuppmjywkacyyst4pkwcnncsmnupoed2ojm4nxtgoeymlr4",
+  "interfaces": ["TZIP-012", "TZIP-016"],
+  "authors": ["https://github/adarshzpatel <adarshzpatel@gmail.com>"],
+  "homepage": "https://tezmint.vercel.app/"
+}

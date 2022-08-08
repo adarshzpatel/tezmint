@@ -14,7 +14,7 @@ const Breadcrumbs = ({ data, active }: BreadcrumbsProps) => {
         <div key={index} className="flex items-center gap-3">
           <p
             className={clsx({
-              "text-primary-400 font-medium": index === active,
+              "text-primary-600 font-medium": index === active,
             })}
           >
             {item}

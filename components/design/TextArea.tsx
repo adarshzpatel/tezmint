@@ -23,7 +23,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>(function Input(
                     className={clsx(
                         'ring-1 ring-gray-300 hover:ring-gray-300 hover:shadow-lg focus:shadow-xl focus:-translate-y-0.5 duration-300 ease-out  focus:ring-primary-500 rounded-xl disabled:opacity-60 disabled:bg-opacity-20 outline-none w-full p-4',
                         {
-                            '!border-red-500 placeholder-red-500': error,
+                            '!ring-red-500 ring-1': error,
                         },
                         className
                     )}
@@ -32,6 +32,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>(function Input(
                     {...props}
                 />
             </div>
+            {error !== "" && <div className="mt-1 text-red-600">{error}</div>}
         </label>
     );
 });

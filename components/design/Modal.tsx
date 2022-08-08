@@ -24,13 +24,13 @@ const Modal: React.FC<Props> = ({ isOpen, closeModal,children,size='md' }) => {
                 <div className="min-h-screen  px-4 text-center">
                     <Transition.Child
                         as="div"
-                        enter="ease-out duration-300"
+                        enter="ease-in "
                         enterFrom="opacity-0"
-                        enterTo="opacity-100"
+                        enterTo="opacity-100 "
                         leave="ease-in duration-200"
                         leaveFrom="opacity-100"
-                        leaveTo="opacity-0">
-                        <Dialog.Overlay className="fixed inset-0 backdrop-blur-[1px] backdrop-brightness-50" />
+                        leaveTo=" opacity-0">
+                        <Dialog.Overlay className="fixed inset-0 backdrop-blur-sm backdrop-brightness-50" />
                     </Transition.Child>
 
                     {/* This element is to trick the browser into centering the modal contents. */}
@@ -40,7 +40,7 @@ const Modal: React.FC<Props> = ({ isOpen, closeModal,children,size='md' }) => {
                     <Transition.Child
                         as={Fragment}
                         enter="ease-out duration-300"
-                        enterFrom="opacity-0 scale-95"
+                        enterFrom="translate-y-40 opacity-0 scale-95"
                         enterTo="opacity-100 scale-100"
                         leave="ease-in duration-200"
                         leaveFrom="opacity-100 scale-100"
@@ -50,7 +50,7 @@ const Modal: React.FC<Props> = ({ isOpen, closeModal,children,size='md' }) => {
                                 { 'sm:max-w-5xl': size === 'lg' },
                                 { 'sm:max-w-3xl': size === 'md' },
                                 { 'sm:max-w-lg': size === 'sm' },
-                                'inline-block bg-[#181A20] text-left overflow-hidden shadow-xl transform transition-all sm:my-8 align-middle w-full rounded p-6 border border-[#5F5B5B]'
+                                'inline-block bg-slate-100 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 align-middle w-full rounded-lg p-6 border '
                             )}>
                             <button onClick={closeModal} className="absolute right-6 top-6">
                                 <HiX className="h-6 w-6" />

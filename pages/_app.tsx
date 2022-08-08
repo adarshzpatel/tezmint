@@ -4,27 +4,32 @@ import AppContainer from "../components/layout/AppContainer";
 import useContractStore from "../tezos/useContractStore";
 import { useEffect } from "react";
 import useWalletStore from "../tezos/useWalletStore";
+import { AnimatePresence, MotionConfig } from "framer-motion";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  const loadContracts = useContractStore(state => state.loadContracts);
-  const connectWallet = useWalletStore(state=>state.connectWallet);
-  const isConnected = useWalletStore(state=>state.isConnected)
+function MyApp({ Component, pageProps,router }: AppProps) {
+  const loadContracts = useContractStore((state) => state.loadContracts);
+  const connectWallet = useWalletStore((state) => state.connectWallet);
+  const isConnected = useWalletStore((state) => state.isConnected);
   //Initial checks and loadups
-  useEffect(()=>{
-      connectWallet(false);
-  },[connectWallet])
+  useEffect(() => {
+    connectWallet(false);
+  }, [connectWallet]);
 
   // Load the wallet contract instances once the wallet is loadd
-  useEffect(()=>{
-    if(isConnected){
+  useEffect(() => {
+    if (isConnected) {
       loadContracts();
     }
-  },[isConnected,loadContracts])
-  
+  }, [isConnected, loadContracts]);
+
   return (
-    <AppContainer>
-      <Component {...pageProps} />
-    </AppContainer>
+    <MotionConfig reducedMotion="user">
+      <AppContainer key="root">
+ 
+        <Component {...pageProps}/>
+   
+      </AppContainer>
+    </MotionConfig>
   );
 }
 

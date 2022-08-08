@@ -1,8 +1,8 @@
 import { NetworkType } from "@airgap/beacon-sdk";
 
 
-export const MARKETPLACE_CONTRACT = "KT1CRmYMuug6DeTuKqokjEKXKDKG83yf4NfG";
-export const NFT_CONTRACT = "KT1FKziiQAbfFRzt2rbQjXBqZpfSFoNRUByH";
+export const SFT_CONTRACT = "KT1CRmYMuug6DeTuKqokjEKXKDKG83yf4NfG";
+export const NFT_CONTRACT = "KT1LJoFUrAx1V2oHigFsNZXRsB6oYc4Wt5LP";
 
 type ConfigType = {
   dappName:string

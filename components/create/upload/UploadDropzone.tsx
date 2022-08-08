@@ -63,7 +63,7 @@ const UploadDropzone = ({ file, thumbnail, setFile, setThumbnail }: Props) => {
       <div
         {...getRootProps()}
         className={clsx(
-          "rounded-lg flex border-2 cursor-pointer flex-col h-[500px] items-center justify-center overflow-hidden",
+          "rounded-lg flex border-2 cursor-pointer flex-col h-[400px] items-center justify-center overflow-hidden",
           {
             "border-red-500 shadow-2xl bg-red-100 bg-opacity-50": isDragReject === true,
             "border-green-500 border-solid shadow-2xl bg-green-100 bg-opacity-50": isDragAccept === true,
@@ -94,11 +94,11 @@ const UploadDropzone = ({ file, thumbnail, setFile, setThumbnail }: Props) => {
           </div>
         )}
         {file && (
-          <div>
+          <div className="h-full">
             <img
               src={thumbnail.toString()}
               alt="preview"
-              className="h-full w-full object-center object-contain"
+              className="h-full object-contain"
             />
           </div>
         )}

@@ -4,7 +4,7 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import Button from "../../design/Button";
 import Heading from "../../design/Heading";
 import UploadDropzone from "./UploadDropzone";
-
+import {motion} from 'framer-motion'
 type Props = {
   setStep: Dispatch<SetStateAction<1 | 2 | 3>>;
   setThumbnail: Dispatch<SetStateAction<string>>;
@@ -21,9 +21,8 @@ const UploadNft = ({
   thumbnail,
 }: Props) => {
   return (
-    <div className="max-w-screen-md mx-auto">
-      <Heading className="text-center">Upload your NFT</Heading>
-      <p className="my-4 text-center text-lg ">Drag and drop or select file </p>
+    <motion.div animate={{x:[50,0],opacity:[0,1]}}  className="max-w-screen-sm mx-auto">
+      <Heading className="text-center">Drag & drop or click to select file </Heading>
       <UploadDropzone
         file={file}
         thumbnail={thumbnail}
@@ -62,7 +61,7 @@ const UploadNft = ({
           </Button>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
