@@ -11,13 +11,14 @@ type Props = {
 const NftCard = ({ name, imgSrc, description }: Props) => {
   return (
     <Tooltip content="Click to view details">
-      <div className="rounded-lg cursor-pointer hover:shadow-xl hover:-translate-y-2 duration-200 ease-out border p-3">
-        <img
-          className="rounded-md  bg-gray-100 shadow-inner object-cover object-center w-full"
-          src={ipfsToGatewayLink(imgSrc)}
-          alt="nft-image"
-        />
-
+      <div className="rounded-lg max-h-min cursor-pointer hover:shadow-xl hover:-translate-y-2 duration-200 ease-out border p-3">
+        <div className="aspect-square rounded-md flex items-center justify-center bg-gray-100 shadow-inner overflow-hidden">
+          <img
+            className=" object-cover object-center w-full"
+            src={ipfsToGatewayLink(imgSrc)}
+            alt="nft-image"
+          />
+        </div>
         <p className="font-medium  mt-4">{name}</p>
         <p className="text-gray-400 text-sm mt-1 whitespace-pre-wrap">
           {description}
