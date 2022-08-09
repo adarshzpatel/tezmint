@@ -106,10 +106,10 @@ const Profile = (props: Props) => {
             <Tab.Panel className="grid grid-cols-4 gap-4 ">
               {nftsMinted?.map((item: any) => (
                 <NftCard
-                  imgSrc={item?.token.metadata.thumbnailUri}
+                  imgSrc={item?.token?.metadata?.thumbnailUri}
                   key={item?.id}
-                  name={item?.token.metadata.name}
-                  description={item?.token.metadata.description}
+                  name={item?.token?.metadata?.name}
+                  description={item?.token?.metadata?.description}
                 />
               ))}
             </Tab.Panel>

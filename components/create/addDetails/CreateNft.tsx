@@ -12,6 +12,7 @@ import { storeToIpfs } from "../../../lib/nftStorage";
 import toast from "react-hot-toast";
 import { mintOperation } from "../../../operations/fa2";
 import useContractStore from "../../../tezos/useContractStore";
+import MintProgress from "./MintProgress";
 
 type Props = {
   setStep: Dispatch<SetStateAction<1 | 2 | 3>>;
@@ -25,7 +26,11 @@ type FormData = {
   tagString: string;
 };
 
-type Status = "Uploading" | "Minting" | "Failed" | "Success";
+const mintSteps = [
+  "Uploading File to IPFS 🚀",
+  "Uploading Metadata to IPFS 🔥",
+  "Minting your NFT ✨",
+];
 
 const CreateNft = ({ nftFile, nftThumbnail }: Props) => {
   const {
@@ -34,9 +39,12 @@ const CreateNft = ({ nftFile, nftThumbnail }: Props) => {
     formState: { errors },
     watch,
   } = useForm<FormData>();
-  const [status, setStatus] = useState<Status>();
+  const [currentMintStep, setCurrentMintStep] = useState<number>(0);
+  const [showMintProgress, setShowMintProgress] = useState<boolean>(false);
   const currentAccountPkh = useWalletStore((state) => state.accountPkh);
-  const nftContract = useContractStore(state => state.nftContract)
+  const nftContract = useContractStore((state) => state.nftContract);
+    const [txHash,setTxHash] = useState<string | undefined>(undefined);
+
   const handleMint: SubmitHandler<FormData> = async (data) => {
     try {
       if (nftFile) {
@@ -45,12 +53,11 @@ const CreateNft = ({ nftFile, nftThumbnail }: Props) => {
         const tags = tagString.split(",");
         // get the mime type from the file
         const mimeType = nftFile?.type;
-        // upload the file to ipfs and get the artifactUri
-        // upload thumbnail to ipfs and get the thumbnailUri
-        setStatus("Uploading");
-        console.log("Uploading file ")
+        setShowMintProgress(true); // Show mint progress component
+        // upload the file to ipfs and get the artifactUri & thumbnail Uri
+        console.log("Uploading file ");
         const fileCid = await storeToIpfs(nftFile);
-        console.log("File uploaded successfully ")
+        console.log("File uploaded successfully ");
         if (fileCid) {
           const metadata = createNftMetadata({
             name,
@@ -62,27 +69,40 @@ const CreateNft = ({ nftFile, nftThumbnail }: Props) => {
             tags,
           });
           const metadataBlob = new Blob([JSON.stringify(metadata)]);
-          console.log({metadataBlob});
+          console.log({ metadataBlob });
           // upload metadata to ipfs
-          console.log('Uploading metadata')
+          setCurrentMintStep(1);
+          console.log("Uploading metadata");
           const metadataCid = await storeToIpfs(metadataBlob);
-          console.log('Metadata uploaded successfully');
-          // mint the nft 
-          console.log("Minting nft")
-          console.log({metadataCid,fileCid})
-          if(nftContract && metadataCid){
-            const mintOp = mintOperation("ipfs://"+metadataCid,nftContract,currentAccountPkh)
-            console.log({mintOp});
+          console.log("Metadata uploaded successfully");
+          // mint the nft
+          console.log("Minting nft");
+          console.log({ metadataCid, fileCid });
+          if (nftContract && metadataCid) {
+            setCurrentMintStep(2);
+            const mintOp = await mintOperation(
+              "ipfs://" + metadataCid,
+              nftContract,
+              currentAccountPkh
+            );
+            await mintOp?.confirmation(1);
+            setTxHash(mintOp?.opHash)
+            setCurrentMintStep(3);
+            console.log(mintOp?.receipt())
           } else {
-            console.log("contract or metadata cid not found ")
+            console.log("contract or metadata cid not found ");
           }
         }
       }
     } catch (err) {
-      setStatus("Failed");
+      setCurrentMintStep(-1);
       console.error(err);
     }
   };
+
+  if(showMintProgress){
+    return <MintProgress loading={currentMintStep} steps={mintSteps} txHash={txHash} />
+  }
 
   return (
     <div className="max-w-screen-lg mx-auto flex flex-wrap gap-4 justify-between">

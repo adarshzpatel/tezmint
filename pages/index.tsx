@@ -7,6 +7,7 @@ import useWalletStore from "../tezos/useWalletStore";
 import { MichelsonMap } from "@taquito/taquito";
 import { Input } from "../components/design/Input";
 import NextLink from "../components/design/NextLink";
+import MintProgress from "../components/create/addDetails/MintProgress";
 const Home: NextPage = () => {
   const [tezos, loadContracts] = useContractStore((state) => [
     state.tezos,
@@ -24,13 +25,21 @@ const Home: NextPage = () => {
       );
     }
   };
-
+  const mintSteps = [
+    "Uploading File to IPFS 🚀",
+    "Uploading Metadata to IPFS 🔥",
+    "Minting your NFT ✨",
+  ];
+  
+  
   return (
     <div>
-      <h1 className="text-6xl font-black">Welcome to Tez Mint</h1>
+      {/* <h1 className="text-6xl font-black">Welcome to Tez Mint</h1>
       <NextLink href={"/create"}>
         <Button size="lg" variant="primary" className="mt-4">Mint your nft now</Button>
-      </NextLink>
+      </NextLink> */}
+   
+      
     </div>
   );
 };

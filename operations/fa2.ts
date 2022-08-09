@@ -9,9 +9,7 @@ export const mintOperation = async (metadata:string,contract:WalletContract,pkh:
         console.log({metadataURI})
         console
         const op = await contract.methods.mint(pkh,MichelsonMap.fromLiteral({"":metadataURI})).send()
-        await op.confirmation(1);
-        console.log(op)
-        toast.success("Trasaction Success!")
+        return op;
       } catch(e) {
       toast.error("Transaction Failed!")
       console.log(e)
