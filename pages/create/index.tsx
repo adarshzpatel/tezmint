@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import React, { useState } from "react";
 import { NftTypes } from "../../components/create/types";
-import Breadcrumbs from "../../components/design/Breadcrumbs";
+import Breadcrumbs from "../../components/ui/Breadcrumbs";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import ChooseNftType from "../../components/create/selectType/ChooseNftType";
@@ -69,24 +69,7 @@ const Create: NextPage = (props: Props) => {
 
       {/* {renderSteps()} */}
       <AnimatePresence exitBeforeEnter>
-      {step === 1 && (
-        <ChooseNftType
-        key="step1"
-          nftType={nftType}
-          setStep={setStep}
-          setType={setNftType}
-        />
-      )}
-      {step === 2 && (
-        <UploadNft
-        key="step2"
-          setStep={setStep}
-          thumbnail={nftThumbnail}
-          file={nftFile}
-          setThumbnail={setNftThumbnail}
-          setFile={setNftFile}
-        />
-        )}
+        {renderSteps()}
         </AnimatePresence>
     </div>
   );
