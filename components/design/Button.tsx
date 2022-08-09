@@ -26,17 +26,17 @@ export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
                     !outline && variant === 'primary',
                     'bg-gradient-to-r from-violet-400 to-fuchsia-500 hover:from-violet-500 hover:to-fuchsia-600    text-white focus:ring-1 ring-white':
                         !outline && variant === 'gradient',
-                        'bg-slate-300 hover:bg-slate-400/60 active:bg-slate-400/60 text-black':
+                        'bg-slate-300/60 hover:bg-slate-300 active:bg-slate-300 text-black':
                     !outline && variant === 'secondary',
                     'bg-yellow-500 hover:bg-yellow-400 active:bg-yellow-600 text-white focus:ring-1 ring-white':
                     !outline &&  variant === 'warning',
                     'bg-red-500 hover:bg-red-400 active:bg-red-600 text-white focus:ring-1 ring-white':
                     !outline &&  variant === 'danger',
-                    'border-primary-500 hover:bg-primary-500 active:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:ring-0 text-primary-600 ': outline && variant === 'primary',
-                    'border-white hover:bg-white text-white active:bg-white focus:bg-white focus:ring-0': outline && variant === 'secondary',
+                    'border-primary-500 hover:bg-primary-500/10 active:bg-primary-600/10 focus:bg-primary-600/10 focus:outline-none focus:ring-0 text-primary-600 ': outline && variant === 'primary',
+                    'border-gray-500 hover:bg-gray-500/10 text-gray-900 active:bg-gray-500/20 focus:bg-gray-500/10 focus:outline-none focus:ring-0': outline && variant === 'secondary',
                     'border-yellow-500 hover:bg-yellow-500 active:bg-yellow-500 focus:bg-yellow-500  focus:ring-0 ': outline && variant === 'warning',
-                    'border-red-500 hover:bg-red-500 active:bg-red-500 focus:bg-red-500  focus:ring-0 ': outline && variant === 'danger',
-                    'border hover:bg-opacity-10 active:bg-opacity-10 focus:bg-opacity-10':outline,
+                    'border-red-500 hover:bg-red-600 active:bg-red-600 focus:bg-red-600  focus:ring-0 ': outline && variant === 'danger',
+                    'border ':outline,
                     'flex items-center  justify-center gap-2': (icon || loading) && children,
                     'px-3 py-1 text-sm ':size === 'sm',
                     'px-4 py-1.5 text-base':size === 'md',

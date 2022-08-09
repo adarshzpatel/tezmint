@@ -1,32 +1,42 @@
 import { AccountInfo } from "@airgap/beacon-sdk";
-import React, {useEffect,useState } from "react";
-import Heading from "../components/ui/Heading";
+import React, { useEffect, useMemo, useState } from "react";
+import Heading from "../components/design/Heading";
 import useContractStore from "../tezos/useContractStore";
 import useWalletStore from "../tezos/useWalletStore";
 import { motion } from "framer-motion";
 import WalletInfo from "../components/profile/WalletInfo";
 import { Tab } from "@headlessui/react";
 import clsx from "clsx";
+import { getFa2NftOwned } from "../lib/tztk";
+import { NFT_CONTRACT } from "../tezos/config";
+import NftCard from "../components/profile/NftCard";
+import Button from "../components/design/Button";
+import { HiOutlineLogout, HiOutlineRefresh } from "react-icons/hi";
 type Props = {};
 
 const Profile = (props: Props) => {
-  const { isConnected, walletInstance, connectWallet } = useWalletStore();
+  const {
+    isConnected,
+    walletInstance,
+    accountPkh,
+    connectWallet,
+    balance,
+    fetchBalance,
+  } = useWalletStore();
   const [accountInfo, setAccountInfo] = useState<AccountInfo>();
   const { tezos } = useContractStore();
+  const [nftsMinted, setNftsMinted] = useState<any>([]);
+
   // get account info
   useEffect(() => {
     (async () => {
       if (walletInstance?.client) {
+        fetchBalance();
         setAccountInfo(await walletInstance?.client?.getActiveAccount());
-        console.log();
+        setNftsMinted(await getFa2NftOwned(NFT_CONTRACT, accountPkh));
       }
     })();
-  }, [walletInstance]);
-
-  // check if wallet is connected
-  useEffect(() => {
-    if (!isConnected) connectWallet(true);
-  }, []);
+  }, [walletInstance, isConnected]);
 
   if (!isConnected) {
     return <div>Please Connect your wallet.</div>;
@@ -34,16 +44,25 @@ const Profile = (props: Props) => {
 
   return (
     <div className="max-w-screen-lg mx-auto">
-      <Heading>My Profile</Heading>
+      <div className="flex items-center ">
+        <Heading className="flex-1">My Profile</Heading>
+    <div className="flex items-center gap-4">
+        <Button outline icon={<HiOutlineRefresh className="h-5 w-5" />}>Refresh</Button>
+        <Button icon={<HiOutlineLogout className="h-5 w-5" />} variant="danger">
+          Disconnect
+        </Button>
+    </div>
+      </div>
+
       <WalletInfo
         network={accountInfo?.network?.type}
-        address={accountInfo?.address}
-        balance={999}
+        address={accountPkh}
+        balance={balance}
       />
       <div className="mt-8 flex flex-col bg-white p-1 rounded-lg">
         <Tab.Group>
           <Tab.List className="flex border-b-2">
-            <Tab>
+            <Tab className="focus:outline-none">
               {({ selected }: { selected: boolean }) => (
                 <div
                   className={clsx({
@@ -62,7 +81,7 @@ const Profile = (props: Props) => {
                 </div>
               )}
             </Tab>
-            <Tab>
+            <Tab className="focus:outline-none">
               {({ selected }: { selected: boolean }) => (
                 <div
                   className={clsx({
@@ -84,19 +103,15 @@ const Profile = (props: Props) => {
           </Tab.List>
 
           <Tab.Panels className="rounded-lg p-4">
-            <Tab.Panel className="grid grid-cols-4 gap-4">
-              <div className="rounded-lg hover:shadow-xl hover:-translate-y-2 duration-200 ease-out border p-3">
-                <img
-                  className="rounded-md aspect-square bg-gray-100 shadow-inner object-cover object-center w-full"
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80"
-                  alt="nft-image"
+            <Tab.Panel className="grid grid-cols-4 gap-4 ">
+              {nftsMinted?.map((item: any) => (
+                <NftCard
+                  imgSrc={item?.token.metadata.thumbnailUri}
+                  key={item?.id}
+                  name={item?.token.metadata.name}
+                  description={item?.token.metadata.description}
                 />
-
-                <p className="font-medium  mt-4">Name</p>
-                <p className="text-gray-400 text-sm mt-1 whitespace-pre-wrap">
-                  Description
-                </p>
-              </div>
+              ))}
             </Tab.Panel>
             <Tab.Panel>SFT</Tab.Panel>
           </Tab.Panels>

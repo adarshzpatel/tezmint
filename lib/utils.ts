@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { Fa2NftMetadata } from "../components/create/types";
 
 type CreateNftMetadataProps = {
@@ -25,4 +26,13 @@ export const createNftMetadata = ({name,artifactUri,creator,description,mimeType
     shouldPreferSymbol:false,
     symbol:"TMNFT"
   }
+}
+
+export const ipfsToGatewayLink = (link:string) => {
+  return link.replace("ipfs://","https://nftstorage.link/ipfs/")
+}
+
+export const copyToClipboard = (str:string) => {
+  navigator.clipboard.writeText(str);
+  toast.success("Copied to Clipboard!")
 }

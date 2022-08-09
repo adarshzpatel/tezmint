@@ -57,7 +57,7 @@ const useWalletStore = create<WalletState>((set, get) => ({
       const _pkh = get().accountPkh;
       if(_pkh){
         const res = await axios.get(`${apiUrl}/accounts/${_pkh}/balance`);
-        console.log(res.data);
+        set({balance:res.data})
       } else {
         console.log("pkh not found ")
       }

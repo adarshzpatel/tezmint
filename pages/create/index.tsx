@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import React, { useState } from "react";
 import { NftTypes } from "../../components/create/types";
-import Breadcrumbs from "../../components/ui/Breadcrumbs";
+import Breadcrumbs from "../../components/design/Breadcrumbs";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import ChooseNftType from "../../components/create/selectType/ChooseNftType";

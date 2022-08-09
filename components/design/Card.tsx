@@ -9,7 +9,7 @@ type Props = {
 const Card = (props: Props) => {
   return (
     <div className={clsx(
-      'bg-white hover:bg-gray-100',
+      'bg-white rounded-lg border border-gray-300 p-1',
       props.className
     )
     }>{props.children}</div>
