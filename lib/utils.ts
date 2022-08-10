@@ -16,7 +16,7 @@ export const createNftMetadata = ({name,artifactUri,creator,description,mimeType
   return {
     name,
     description,
-    tags:[],
+    tags,
     creators:[creator],
     artifactUri:"ipfs://"+artifactUri,
     formats:[{uri:"ipfs://"+artifactUri,mimeType:mimeType}],

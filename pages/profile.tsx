@@ -12,21 +12,22 @@ import { NFT_CONTRACT } from "../tezos/config";
 import NftCard from "../components/profile/NftCard";
 import Button from "../components/design/Button";
 import { HiOutlineLogout, HiOutlineRefresh } from "react-icons/hi";
-type Props = {};
+import NftDetailsModal from "../components/profile/NftDetailsModal";
 
-const Profile = (props: Props) => {
+const Profile = () => {
   const {
     isConnected,
     walletInstance,
     accountPkh,
-    connectWallet,
+    disconnectAccount,
     balance,
     fetchBalance,
   } = useWalletStore();
   const [accountInfo, setAccountInfo] = useState<AccountInfo>();
   const { tezos } = useContractStore();
   const [nftsMinted, setNftsMinted] = useState<any>([]);
-
+  const [showDetails, setShowDetails] = useState<boolean>(false);
+  const [modalMetadata, setModalMetadata] = useState<any>(null);
   // get account info
   useEffect(() => {
     (async () => {
@@ -43,81 +44,101 @@ const Profile = (props: Props) => {
   }
 
   return (
-    <div className="max-w-screen-lg mx-auto">
-      <div className="flex items-center ">
-        <Heading className="flex-1">My Profile</Heading>
-    <div className="flex items-center gap-4">
-        <Button outline icon={<HiOutlineRefresh className="h-5 w-5" />}>Refresh</Button>
-        <Button icon={<HiOutlineLogout className="h-5 w-5" />} variant="danger">
-          Disconnect
-        </Button>
-    </div>
-      </div>
+    <>
+      <div className="max-w-screen-lg mx-auto">
+        <div className="flex items-center ">
+          <Heading className="flex-1">My Profile</Heading>
+          <div className="flex items-center gap-4">
+            <Button outline icon={<HiOutlineRefresh className="h-5 w-5" />}>
+              Refresh
+            </Button>
+            <Button
+              onClick={disconnectAccount}
+              icon={<HiOutlineLogout className="h-5 w-5" />}
+              variant="danger"
+            >
+              Disconnect
+            </Button>
+          </div>
+        </div>
 
-      <WalletInfo
-        network={accountInfo?.network?.type}
-        address={accountPkh}
-        balance={balance}
-      />
-      <div className="mt-8 flex flex-col bg-white p-1 rounded-lg">
-        <Tab.Group>
-          <Tab.List className="flex border-b-2">
-            <Tab className="focus:outline-none">
-              {({ selected }: { selected: boolean }) => (
-                <div
-                  className={clsx({
-                    "bg-slate-100  rounded-t-lg": selected === true,
-                  })}
-                >
-                  <p className="px-4 py-2 relative top-0.5 ">
-                    Non-fungible Tokens (NFT)
-                  </p>
-                  {selected && (
-                    <motion.div
-                      className="h-0.5 relative top-0.5 bg-blue-400 "
-                      layoutId="tabHighlight"
-                    />
-                  )}
-                </div>
-              )}
-            </Tab>
-            <Tab className="focus:outline-none">
-              {({ selected }: { selected: boolean }) => (
-                <div
-                  className={clsx({
-                    "bg-slate-100 relative rounded-t-lg": selected === true,
-                  })}
-                >
-                  <p className="px-4 py-2 relative top-0.5">
-                    Semi-fungible Tokens (SFT)
-                  </p>
-                  {selected && (
-                    <motion.div
-                      className="h-0.5 relative top-0.5 bg-blue-400 z-10"
-                      layoutId="tabHighlight"
-                    />
-                  )}
-                </div>
-              )}
-            </Tab>
-          </Tab.List>
+        <WalletInfo
+          network={accountInfo?.network?.type}
+          address={accountPkh}
+          balance={balance}
+        />
+        <div className="mt-8 flex flex-col bg-white p-1 rounded-lg">
+          <Tab.Group>
+            <Tab.List className="flex border-b-2">
+              <Tab className="focus:outline-none">
+                {({ selected }: { selected: boolean }) => (
+                  <div
+                    className={clsx({
+                      "bg-slate-100  rounded-t-lg": selected === true,
+                    })}
+                  >
+                    <p className="px-4 py-2 relative top-0.5 ">
+                      Non-fungible Tokens (NFT)
+                    </p>
+                    {selected && (
+                      <motion.div
+                        className="h-0.5 relative top-0.5 bg-blue-400 "
+                        layoutId="tabHighlight"
+                      />
+                    )}
+                  </div>
+                )}
+              </Tab>
+              <Tab className="focus:outline-none">
+                {({ selected }: { selected: boolean }) => (
+                  <div
+                    className={clsx({
+                      "bg-slate-100 relative rounded-t-lg": selected === true,
+                    })}
+                  >
+                    <p className="px-4 py-2 relative top-0.5">
+                      Semi-fungible Tokens (SFT)
+                    </p>
+                    {selected && (
+                      <motion.div
+                        className="h-0.5 relative top-0.5 bg-blue-400 z-10"
+                        layoutId="tabHighlight"
+                      />
+                    )}
+                  </div>
+                )}
+              </Tab>
+            </Tab.List>
 
-          <Tab.Panels className="rounded-lg p-4">
-            <Tab.Panel className="grid grid-cols-4 gap-4 ">
-              {nftsMinted?.map((item: any) => (
-                <NftCard
-                  imgSrc={item?.token?.metadata?.thumbnailUri}
-                  key={item?.id}
-                  name={item?.token?.metadata?.name}
-                  description={item?.token?.metadata?.description}
-                />
-              ))}
-            </Tab.Panel>
-            <Tab.Panel>SFT</Tab.Panel>
-          </Tab.Panels>
-        </Tab.Group>
+            <Tab.Panels className="rounded-lg p-4">
+              <Tab.Panel className="grid grid-cols-4 gap-4 ">
+                {nftsMinted?.map((item: any) => (
+                  <div onClick={()=>{
+                    setShowDetails(true)
+                    setModalMetadata(item?.token)
+                  }} key={item?.id}>
+                    <NftCard
+                      imgSrc={item?.token?.metadata?.thumbnailUri}
+                      
+                      name={item?.token?.metadata?.name}
+                      description={item?.token?.metadata?.description}
+                    />
+                  </div>
+                ))}
+              </Tab.Panel>
+              <Tab.Panel>SFT</Tab.Panel>
+            </Tab.Panels>
+          </Tab.Group>
+        </div>
       </div>
-    </div>
+      {showDetails && modalMetadata !== null && (
+        <NftDetailsModal
+          tokenData={modalMetadata}
+          isOpen={showDetails}
+          setIsOpen={setShowDetails}
+        />
+      )}
+    </>
   );
 };
 

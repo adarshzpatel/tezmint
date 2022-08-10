@@ -10,6 +10,7 @@ interface WalletState {
   accountPkh: string;
   connectWallet: (request: boolean) => Promise<void>;
   fetchBalance: () => Promise<void>;
+  disconnectAccount: () => void;
 }
 
 const useWalletStore = create<WalletState>((set, get) => ({
@@ -66,6 +67,11 @@ const useWalletStore = create<WalletState>((set, get) => ({
       console.error({ err });
     }
   },
+  disconnectAccount: ()=> {
+    const wallet = get().walletInstance;
+    wallet?.clearActiveAccount();
+    set({balance:0,accountPkh:'',isConnected:false})
+  }
 }));
 
 export default useWalletStore;
