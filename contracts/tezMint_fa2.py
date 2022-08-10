@@ -3,7 +3,7 @@ FA2 = sp.io.import_script_from_url("https://smartpy.io/templates/fa2_lib.py")
 
 class TezMintCollection(FA2.Admin, FA2.Fa2Nft):
     def __init__(self, **kwargs):    
-        FA2.Fa2Nft.__init__(self, metadata = sp.utils.metadata_of_url("http://example.com"),token_metadata={},ledger={})
+        FA2.Fa2Nft.__init__(self, metadata = sp.utils.metadata_of_url("ipfs://bafkreicdcvcxqrxqwjcrdxurhuvvfc2ekofdx4h52swlmbq7tjmnyv4b4q"),token_metadata={},ledger={})
         FA2.Admin.__init__(self, sp.address("tz1bKyWHn17KyS1HApH1c8rrKaoorKkCWqQV"))
 
     @sp.entry_point

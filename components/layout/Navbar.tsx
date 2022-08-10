@@ -10,7 +10,7 @@ type Props = {};
 
 const Navbar = (props: Props) => {
   return (<>
-    <header className="p-8 py-4 sticky border-b  border-gray-300">
+    <header className="px-4 sm:px-8 py-4 sticky border-b  border-gray-300">
       <nav className="flex items-center gap-4  mx-auto justify-between ">
         <NextLink href="/">
           <Logo />

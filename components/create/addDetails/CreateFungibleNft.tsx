@@ -1,51 +1,191 @@
-import React, { Dispatch, SetStateAction } from 'react'
-import { useForm } from 'react-hook-form';
-import Button from '../../design/Button';
-import Heading from '../../design/Heading';
-import { Input } from '../../design/Input';
-import { TextArea } from '../../design/TextArea';
-import { Fa2FungibleMetadata } from '../types';
-import NftPreview from './NftPreview';
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { mintSFTOperation } from "../../../lib/fa2operations";
+import { storeToIpfs } from "../../../lib/nftStorage";
+import { createNftMetadata } from "../../../lib/utils";
+import useContractStore from "../../../tezos/useContractStore";
+import useWalletStore from "../../../tezos/useWalletStore";
+import Button from "../../design/Button";
+import Heading from "../../design/Heading";
+import { Input } from "../../design/Input";
+import { TextArea } from "../../design/TextArea";
+import { mintSteps } from "./CreateNft";
+import MintProgress from "./MintProgress";
+import NftPreview from "./NftPreview";
 
 type Props = {
-  setStep:Dispatch<SetStateAction<1|2|3>>
+  setStep: Dispatch<SetStateAction<1 | 2 | 3>>;
   nftFile: File | null;
   nftThumbnail: string;
-}
+};
 
-const CreateFungibleNft = ({setStep,nftFile,nftThumbnail}: Props) => {
- 
-  const initialValues:Fa2FungibleMetadata={
-    name: "Name your NFT",
-    description: "Give a brief description about your NFT",
-    externalLink: "https://www.example.com",
-    editions: 10 
+type FormData = {
+  name: string;
+  description: string;
+  editions: number;
+  tagString: string;
+};
+
+const CreateFungibleNft = ({ setStep, nftFile, nftThumbnail }: Props) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<FormData>();
+  const [currentMintStep, setCurrentMintStep] = useState<number>(0);
+  const [showMintProgress, setShowMintProgress] = useState<boolean>(false);
+  const currentAccountPkh = useWalletStore((state) => state.accountPkh);
+  const sftContract = useContractStore((state) => state.sftContract);
+  const [txHash, setTxHash] = useState<string | undefined>(undefined);
+
+  const handleFungibleMint: SubmitHandler<FormData> = async (data) => {
+    try {
+      if (nftFile) {
+        // get name and description from the form
+        const { name, description, tagString,editions } = data;
+        const tags = tagString.split(",");
+        // get the mime type from the file
+        const mimeType = nftFile?.type;
+        setShowMintProgress(true); // Show mint progress component
+        // upload the file to ipfs and get the artifactUri & thumbnail Uri
+        console.log("Uploading file ");
+        const fileCid = await storeToIpfs(nftFile);
+        console.log("File uploaded successfully ");
+        if (fileCid) {
+          const metadata = createNftMetadata({
+            name,
+            artifactUri: fileCid,
+            creator: currentAccountPkh,
+            description,
+            mimeType: mimeType ? mimeType : "",
+            thumbnailUri: nftThumbnail,
+            tags,
+          });
+          const metadataBlob = new Blob([JSON.stringify(metadata)]);
+          console.log({ metadataBlob });
+          // upload metadata to ipfs
+          setCurrentMintStep(1);
+          console.log("Uploading metadata");
+          const metadataCid = await storeToIpfs(metadataBlob);
+          console.log("Metadata uploaded successfully");
+          // mint the nft
+          console.log("Minting nft");
+          console.log({ metadataCid, fileCid });
+          if (sftContract && metadataCid) {
+            setCurrentMintStep(2);
+            const mintOp = await mintSFTOperation(
+              "ipfs://" + metadataCid,
+              sftContract,
+              currentAccountPkh,editions
+            );
+            await mintOp?.confirmation(1);
+            setTxHash(mintOp?.opHash);
+            setCurrentMintStep(3);
+            console.log(mintOp?.receipt());
+          } else {
+            console.log("contract or metadata cid not found ");
+          }
+        }
+      }
+    } catch (err) {
+      setCurrentMintStep(-1);
+      console.error(err);
+    }
+  };
+
+  if(showMintProgress){
+    return <MintProgress loading={currentMintStep} steps={mintSteps} txHash={txHash} />
   }
-  const { register, handleSubmit, formState, watch } = useForm<Fa2FungibleMetadata>({
-    defaultValues: initialValues,
-  });
+
 
   return (
-    <div className="max-w-screen-lg mx-auto flex justify-between">
+    <div className="max-w-screen-lg mx-auto flex-wrap gap-8 flex justify-between">
       <div className="flex-1">
         <Heading className="mb-8">Add NFT Details</Heading>
-        <form className="max-w-lg flex flex-col gap-4">
-          <Input label="Name" placeholder={initialValues.name} {...register("name")} className="w-full"/>
-          <Input label="Editions ( Total Supply of token )" placeholder={initialValues.editions.toString()} {...register("editions")} className="w-full"/>
-          <TextArea rows={4} label="Description" placeholder={initialValues.description} {...register("description")} />
-          <Input label="External Link" placeholder={initialValues.externalLink} {...register("externalLink")} />
-          <div className="flex gap-4 mt-4">
-            <Button variant="primary" size="lg" outline className="w-full">Cancel</Button>
-            <Button variant="primary" size="lg" className="w-full">Mint my NFT</Button>
+        <form
+          onSubmit={handleSubmit(handleFungibleMint)}
+          className="max-w-lg flex flex-col gap-4"
+        >
+          <Input
+            label="Name"
+            placeholder="Name your NFT"
+            {...register("name", {
+              required: {
+                value: true,
+                message: "This field cannot be empty.",
+              },
+            })}
+            error={errors.name?.message}
+            className="w-full"
+          />
+            <Input
+            label="Editions"
+            type='number'
+            min={1}
+            placeholder="Enter the number of tokens you want to mint"
+            {...register("editions", {
+              required: {
+                value: true,
+                message: "This field cannot be empty.",
+              },
+              min: {
+                value:1,
+                message: "This value cannot be less than 0"
+              }
+            })}
+            error={errors.editions?.message}
+            className="w-full"
+          />
+          <TextArea
+            rows={4}
+            label="Description"
+            placeholder="A brief description about your nft"
+            {...register("description", {
+              required: {
+                value: true,
+                message: "This field cannot be empty.",
+              },
+            })}
+            error={errors.description?.message}
+          />
+          <Input
+            {...register("tagString")}
+            label="Tags ( Comma separated )"
+            placeholder="Enter tags separeated by comma . Eg art,nft,gaming"
+          />
+          <div className="flex flex-wrap gap-4 mt-4">
+            <Button
+              onClick={()=>setStep(1)}
+              variant="primary"
+              size="lg"
+              outline
+              className="flex-1 w-full"
+            >
+              Go Back
+            </Button>
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              className="flex-1 w-full"
+            >
+              Mint my NFT 🚀
+            </Button>
           </div>
         </form>
       </div>
       <div className="flex-grow-0">
         <Heading className="mb-8">NFT Preview</Heading>
-        <NftPreview description={watch("description")} name={watch("name")} externalLink={watch("externalLink")} thumbnail={nftThumbnail}/>
+        <NftPreview
+          tagString={watch("tagString")}
+          description={watch("description")}
+          name={watch("name")}
+          thumbnail={nftThumbnail}
+        />
       </div>
     </div>
   );
-}
+};
 
-export default CreateFungibleNft
+export default CreateFungibleNft;

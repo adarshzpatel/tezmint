@@ -29,14 +29,15 @@ const UploadNft = ({
         setFile={setFile}
         setThumbnail={setThumbnail}
       />
-      <div className="mt-8 flex justify-between ">
+      <div className="mt-8 flex flex-wrap gap-4 justify-between ">
         <Button
           onClick={() => setStep(1)}
           outline
           variant="primary"
           size="lg"
-          className="flex items-center gap-1  justify-center"
+          className="flex items-center gap-1 w-full sm:w-fit justify-center"
         >
+          <FiChevronLeft className="h-6 w-6" />
           Go Back
         </Button>
         {file ? (
@@ -44,7 +45,7 @@ const UploadNft = ({
             onClick={() => setStep(3)}
             variant="primary"
             size="lg"
-            className="flex items-center gap-1 "
+            className="flex items-center justify-center w-full sm:w-fit gap-1 "
           >
             Add NFT Details
             <FiChevronRight className="h-6 w-6" />
@@ -53,7 +54,7 @@ const UploadNft = ({
           <Button
             onClick={() => toast.error("Please upload a file")}
             size="lg"
-            className="flex items-center gap-1 px-8
+            className="flex items-centerv justify-center w-full sm:w-fit gap-1 px-8
             "
           >
             Add NFT Details

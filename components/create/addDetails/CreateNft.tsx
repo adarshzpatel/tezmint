@@ -10,7 +10,7 @@ import { createNftMetadata } from "../../../lib/utils";
 import useWalletStore from "../../../tezos/useWalletStore";
 import { storeToIpfs } from "../../../lib/nftStorage";
 import toast from "react-hot-toast";
-import { mintOperation } from "../../../operations/fa2";
+import { mintNFTOperation } from "../../../lib/fa2operations";
 import useContractStore from "../../../tezos/useContractStore";
 import MintProgress from "./MintProgress";
 
@@ -26,13 +26,13 @@ type FormData = {
   tagString: string;
 };
 
-const mintSteps = [
+export const mintSteps = [
   "Uploading File to IPFS 🚀",
   "Uploading Metadata to IPFS 🔥",
   "Minting your NFT ✨",
 ];
 
-const CreateNft = ({ nftFile, nftThumbnail }: Props) => {
+const CreateNft = ({ nftFile, nftThumbnail,setStep }: Props) => {
   const {
     register,
     handleSubmit,
@@ -80,7 +80,7 @@ const CreateNft = ({ nftFile, nftThumbnail }: Props) => {
           console.log({ metadataCid, fileCid });
           if (nftContract && metadataCid) {
             setCurrentMintStep(2);
-            const mintOp = await mintOperation(
+            const mintOp = await mintNFTOperation(
               "ipfs://" + metadataCid,
               nftContract,
               currentAccountPkh
@@ -143,6 +143,7 @@ const CreateNft = ({ nftFile, nftThumbnail }: Props) => {
           />
           <div className="flex flex-wrap gap-4 mt-4">
             <Button
+              onClick={()=>setStep(1)}
               variant="primary"
               size="lg"
               outline

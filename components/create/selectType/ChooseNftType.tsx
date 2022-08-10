@@ -32,7 +32,7 @@ const ChooseNftType = ({ nftType, setStep, setType }: Props) => {
           <RadioGroup.Label>
             <Heading className="text-center">Choose your NFT Type</Heading>
           </RadioGroup.Label>
-          <div className="grid grid-cols-2  mt-8 gap-8">
+          <div className="grid sm:grid-cols-2  mt-8 gap-8">
             <RadioGroup.Option value="NFT">
               {({ checked }) => (
                 <NftTypeCard
