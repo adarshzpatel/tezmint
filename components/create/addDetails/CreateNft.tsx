@@ -48,9 +48,10 @@ const CreateNft = ({ nftFile, nftThumbnail,setStep }: Props) => {
   const handleMint: SubmitHandler<FormData> = async (data) => {
     try {
       if (nftFile) {
-        if(!currentAccountPkh){
-          await connectWallet(true);
-        } 
+      if(!currentAccountPkh){
+        await connectWallet(true);
+        await loadContracts();
+      } 
           
         // get name and description from the form
         const { name, description, tagString } = data;
@@ -97,7 +98,7 @@ const CreateNft = ({ nftFile, nftThumbnail,setStep }: Props) => {
             setCurrentMintStep(3);
             console.log(mintOp?.receipt())
           } else {
-            console.log("contract or metadata cid not found ");
+          throw Error("Oops, something went wrong.");
           }
         }
       }

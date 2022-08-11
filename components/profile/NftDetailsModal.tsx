@@ -78,9 +78,9 @@ const NftDetailsModal = ({
                 className="flex items-center gap-1"
                 onClick={() => copyToClipboard(tokenData?.contract?.address)}
               >
-                {tokenData?.contract?.address.slice(0, 6) +
+                {token?.contract?.address.slice(0, 6) +
                   "..." +
-                  tokenData?.contract?.address.slice(-4, -1)}
+                  token?.contract?.address.slice(-4, -1)}
                 <FiCopy />
               </button>
             </Tooltip>

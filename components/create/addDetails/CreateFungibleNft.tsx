@@ -50,6 +50,7 @@ const CreateFungibleNft = ({ setStep, nftFile, nftThumbnail }: Props) => {
       if (nftFile) {
         if (!currentAccountPkh) {
           await connectWallet(true);
+          loadContracts()
         }
         // get name and description from the form
         const { name, description, tagString, editions } = data;
@@ -94,7 +95,7 @@ const CreateFungibleNft = ({ setStep, nftFile, nftThumbnail }: Props) => {
             setCurrentMintStep(3);
             console.log(mintOp?.receipt());
           } else {
-            console.log("contract or metadata cid not found ");
+      throw Error("Something went wrong")
           }
         }
       }
