@@ -37,10 +37,10 @@ const HeroNftCard = ({
 const Home: NextPage = () => {
   return (
     <div>
-      <div className="grid md:my-48 md:grid-cols-2 gap-16 justify-between max-w-screen-xl mx-auto">
+      <div className="grid my-20 md:my-48 md:grid-cols-2 gap-16 justify-between max-w-screen-xl mx-auto">
         {/* Left Side */}
-        <div className="flex flex-col  ">
-          <h1 className="text-3xl  text-center md:text-left  font-medium sm:font-bold    lg:text-5xl">
+        <div className="flex flex-col items-center  ">
+          <h1 className="text-4xl  text-center md:text-left  font-bold    lg:text-5xl">
             World{"'"}s most{" "}
             <span className=" bg-clip-text bg-gradient-to-b text-transparent from-cyan-400 to-blue-600">
               {" "}
@@ -53,7 +53,7 @@ const Home: NextPage = () => {
             platform
             <br />
           </h1>
-          <p className="text-xl mt-4 text-gray-600">
+          <p className="md:text-xl text-center md:text-left mt-4 text-gray-600">
             Create , preview and mint your dream NFT without any hassle on Tezos
             blockchain using TezMint
           </p>
