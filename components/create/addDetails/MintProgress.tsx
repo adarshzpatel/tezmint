@@ -13,9 +13,10 @@ type Props = {
   loading: number; // index which idenfies which step is being donet
   txHash:string | undefined
   error:string
+  setShowMintProgress:any
 };
 
-const MintProgress = ({ steps, loading,txHash,error }: Props) => {
+const MintProgress = ({ steps, loading,txHash,error,setShowMintProgress }: Props) => {
 
   return (
     <div className="mx-auto max-w-screen-md flex flex-col gap-8 items-center justify-center">
@@ -101,7 +102,7 @@ const MintProgress = ({ steps, loading,txHash,error }: Props) => {
   
         </div>
         <div className="">
-          <Button size="lg" onClick={()=>window.location.reload()} variant="danger" outline> Try Again ?</Button>
+          <Button size="lg" onClick={()=>setShowMintProgress(false)} variant="danger" outline> Try Again ?</Button>
           {/* <Button size="lg" variant="primary" >Show in Profile</Button> */}
         </div>
         </>

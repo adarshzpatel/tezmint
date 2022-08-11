@@ -109,7 +109,7 @@ const CreateNft = ({ nftFile, nftThumbnail,setStep }: Props) => {
   };
 
   if(showMintProgress){
-    return <MintProgress loading={currentMintStep} steps={mintSteps} txHash={txHash} error={mintError} />
+    return <MintProgress setShowMintProgress={setShowMintProgress} loading={currentMintStep} steps={mintSteps} txHash={txHash} error={mintError} />
   }
 
   return (

@@ -1,8 +1,8 @@
 import { NetworkType } from "@airgap/beacon-sdk";
 
 export const apiUrl = "https://api.jakartanet.tzkt.io/v1";
-export const SFT_CONTRACT = "KT1PW1tZtjm8tfJprfrYYMyRvcSTG2fjSFqp"; // Semi fungible Token Contract Address
-export const NFT_CONTRACT = "KT1LJoFUrAx1V2oHigFsNZXRsB6oYc4Wt5LP"; // Non Fungible Token Contract Address
+export const SFT_CONTRACT = "KT1BkSid4kxYd3Lmht6jv8Z1RdpSkkjEJ8Gq"; // Semi fungible Token Contract Address
+export const NFT_CONTRACT = "KT1Qsy19tB9VpLWW1thEoREFujaQe9FEYhi7"; // Non Fungible Token Contract Address
 
 type ConfigType = {
   dappName:string
@@ -13,5 +13,5 @@ type ConfigType = {
 export const tezosConfig:ConfigType = {
   dappName: "TezMint",
   network: NetworkType.JAKARTANET,
-  rpcUrl: "https://rpczero.tzbeta.net/"
+  rpcUrl: "https://jakartanet.ecadinfra.com"
 }

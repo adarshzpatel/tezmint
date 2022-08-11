@@ -107,7 +107,7 @@ const CreateFungibleNft = ({ setStep, nftFile, nftThumbnail }: Props) => {
 
   if (showMintProgress) {
     return (
-      <MintProgress
+      <MintProgress setShowMintProgress={setShowMintProgress}
         loading={currentMintStep}
         steps={mintSteps}
         txHash={txHash}
@@ -125,6 +125,7 @@ const CreateFungibleNft = ({ setStep, nftFile, nftThumbnail }: Props) => {
           className="max-w-lg flex flex-col gap-4"
         >
           <Input
+
             label="Name"
             placeholder="Name your NFT"
             {...register("name", {
