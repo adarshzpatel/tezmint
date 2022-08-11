@@ -88,7 +88,7 @@ const Home: NextPage = () => {
           >
             <HeroNftCard
               title="Eternal Soul"
-              img="/homepage_art.jog"
+              img="/homepage_art.jpg"
               desc="Fantasy Art"
             />
           </motion.div>
