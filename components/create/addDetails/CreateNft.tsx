@@ -113,7 +113,7 @@ const CreateNft = ({ nftFile, nftThumbnail,setStep }: Props) => {
   }
 
   return (
-    <div className="max-w-screen-lg mx-auto flex flex-wrap gap-4 justify-between">
+    <div className="flex flex-wrap gap-4  justify-between">
       <div className="flex-1">
         <Heading className="mb-8">Add NFT Details</Heading>
         <form
@@ -179,6 +179,8 @@ const CreateNft = ({ nftFile, nftThumbnail,setStep }: Props) => {
           thumbnail={nftThumbnail}
         />
       </div>
+      
+      
     </div>
   );
 };

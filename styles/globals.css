@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply bg-gray-100 dark:bg-gray-900  bg-cover;
+    @apply bg-gray-100 bg-cover;
   }
   .gradient-bg {
     background: url("/background.png");

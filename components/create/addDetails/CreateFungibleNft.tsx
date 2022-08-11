@@ -117,7 +117,7 @@ const CreateFungibleNft = ({ setStep, nftFile, nftThumbnail }: Props) => {
   }
 
   return (
-    <div className="max-w-screen-lg mx-auto flex-wrap gap-8 flex justify-between">
+    <div className="flex-wrap gap-8 flex justify-between">
       <div className="flex-1">
         <Heading className="mb-8">Add NFT Details</Heading>
         <form

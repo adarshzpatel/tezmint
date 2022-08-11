@@ -48,8 +48,8 @@ const Profile = () => {
 
   return (
     <>
-      <div className="max-w-screen-lg mx-auto">
-        <div className="flex flex-wrap gap-8 items-center ">
+      <motion.div initial={{y:100,opacity:0}} animate={{y:0,opacity:1}}  className="max-w-screen-lg mx-auto">
+        <motion.div className="flex flex-wrap gap-8 items-center ">
           <Heading className="flex-1">My Profile</Heading>
           <div className="flex items-center gap-4">
             <Button onClick={()=>window.location.reload()} outline icon={<HiOutlineRefresh className="h-5 w-5" />}>
@@ -63,10 +63,10 @@ const Profile = () => {
               Disconnect
             </Button>
           </div>
-        </div>
+        </motion.div>
 
         <WalletInfo network={network} address={accountPkh} balance={balance} />
-        <div className="mt-8 flex flex-col bg-white p-1 rounded-lg">
+        <motion.div className="mt-8 flex flex-col bg-white p-1 rounded-lg">
           <Tab.Group>
             <Tab.List className="flex border-b-2">
               <Tab className="focus:outline-none">
@@ -76,7 +76,7 @@ const Profile = () => {
                       "bg-slate-100  rounded-t-lg": selected === true,
                     })}
                   >
-                    <p className="px-2 md:px-4 py-2 relative top-0.5 ">
+                    <p className="px-2 md:px-4 py-2 text-sm sm:text-base relative top-0.5 ">
                       Non-fungible Tokens (NFT)
                     </p>
                     {selected && (
@@ -95,7 +95,7 @@ const Profile = () => {
                       "bg-slate-100 relative rounded-t-lg": selected === true,
                     })}
                   >
-                    <p className="px-2 md:px-4 py-2 text-sm  relative top-0.5">
+                    <p className="px-2 md:px-4 py-2 text-sm sm:text-base  relative top-0.5">
                       Semi-fungible Tokens (SFT)
                     </p>
                     {selected && (
@@ -111,8 +111,10 @@ const Profile = () => {
 
             <Tab.Panels className="rounded-lg p-4">
               <Tab.Panel className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
-                {nftsMinted?.map((item: any) => (
-                  <div
+                {nftsMinted?.map((item: any,index:number) => (
+                  <motion.div
+                    animate={{y:[100,0],opacity:[0,1],scale:[0.6,1]}}
+                    transition={{delay:0.2*index}}
                     onClick={() => {
                       setShowDetails(true);
                       setModalMetadata(item);
@@ -124,12 +126,14 @@ const Profile = () => {
                       name={item?.token?.metadata?.name}
                       description={item?.token?.metadata?.description}
                     />
-                  </div>
+                  </motion.div>
                 ))}
               </Tab.Panel>
               <Tab.Panel className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
-                {sftsMinted?.map((item: any) => (
-                  <div
+                {sftsMinted?.map((item: any,index:number) => (
+                  <motion.div
+                  animate={{y:[100,0],opacity:[0,1],scale:[0.6,1]}}
+                  transition={{delay:0.2*index}}
                     onClick={() => {
                       setShowDetails(true);
                       setModalMetadata(item);
@@ -142,13 +146,13 @@ const Profile = () => {
                       description={item?.token?.metadata?.description}
                       amount={item?.balance}
                     />
-                  </div>
+                  </motion.div>
                 ))}
               </Tab.Panel>
             </Tab.Panels>
           </Tab.Group>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
       {showDetails && modalMetadata !== null && (
         <NftDetailsModal
           tokenData={modalMetadata}

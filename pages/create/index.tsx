@@ -19,7 +19,6 @@ const Create: NextPage = (props: Props) => {
   const [nftFile, setNftFile] = useState<File | null>(null);
   const [nftThumbnail, setNftThumbnail] = useState<string>("");
 
-
   const renderSteps = () => {
     switch (step) {
       case 1:
@@ -41,18 +40,26 @@ const Create: NextPage = (props: Props) => {
           />
         );
       case 3:
-        return nftType === "FUNGIBLE" ? (
-          <CreateFungibleNft
-            setStep={setStep}
-            nftFile={nftFile}
-            nftThumbnail={nftThumbnail}
-          />
-        ) : (
-          <CreateNft
-            setStep={setStep}
-            nftFile={nftFile}
-            nftThumbnail={nftThumbnail}
-          />
+        return (
+          <div className="max-w-screen-lg mx-auto">
+            {nftType === "FUNGIBLE" ? (
+              <CreateFungibleNft
+                setStep={setStep}
+                nftFile={nftFile}
+                nftThumbnail={nftThumbnail}
+              />
+            ) : (
+              <CreateNft
+                setStep={setStep}
+                nftFile={nftFile}
+                nftThumbnail={nftThumbnail}
+              />
+            )}
+            <hr className="border-gray-400 my-8"/>
+            <div>
+              <span className="font-bold">NOTE :</span> Minting your nft will cost some gas fees to complete your tansaction, so make sure you have some TEZ ( <span className="text-xl"> ꜩ </span> ) in your wallet.
+            </div>
+          </div>
         );
       default:
         return <div> Something went wrong :( </div>;
@@ -69,9 +76,7 @@ const Create: NextPage = (props: Props) => {
       </div>
 
       {/* {renderSteps()} */}
-      <AnimatePresence exitBeforeEnter>
-        {renderSteps()}
-        </AnimatePresence>
+      <AnimatePresence exitBeforeEnter>{renderSteps()}</AnimatePresence>
     </div>
   );
 };
