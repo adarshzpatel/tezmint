@@ -14,6 +14,7 @@ type Props = {
   txHash:string | undefined
   error:string
   setShowMintProgress:any
+  
 };
 
 const MintProgress = ({ steps, loading,txHash,error,setShowMintProgress }: Props) => {

@@ -46,6 +46,8 @@ const CreateNft = ({ nftFile, nftThumbnail,setStep }: Props) => {
   const [mintError,setMintError] = useState<string>("");
 
   const handleMint: SubmitHandler<FormData> = async (data) => {
+    setMintError("")
+    setCurrentMintStep(0);
     try {
       if (nftFile) {
       if(!currentAccountPkh){
@@ -110,7 +112,7 @@ const CreateNft = ({ nftFile, nftThumbnail,setStep }: Props) => {
   };
 
   if(showMintProgress){
-    return <MintProgress setShowMintProgress={setShowMintProgress} loading={currentMintStep} steps={mintSteps} txHash={txHash} error={mintError} />
+    return <MintProgress setShowMintProgress={setShowMintProgress} loading={currentMintStep} steps={mintSteps} txHash={txHash} error={mintError}/>
   }
 
   return (

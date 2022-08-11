@@ -113,6 +113,7 @@ const CreateFungibleNft = ({ setStep, nftFile, nftThumbnail }: Props) => {
         steps={mintSteps}
         txHash={txHash}
         error={mintError}
+      
       />
     );
   }
