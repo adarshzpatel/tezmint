@@ -4,6 +4,7 @@ import Tilt from "react-parallax-tilt";
 import Button from "../components/design/Button";
 import { FiChevronRight } from "react-icons/fi";
 import NextLink from "../components/design/NextLink";
+import { ipfsToGatewayLink } from "../lib/utils";
 const HeroNftCard = ({
   img,
   title,
@@ -86,9 +87,9 @@ const Home: NextPage = () => {
             className="absolute"
           >
             <HeroNftCard
-              title="The monster"
-              img="https://assets.objkt.media/file/assets-003/QmYhvhT7Syx3AcdL3PwdVJwLh8ddHcWtbzr7WkXhKuVyNp/artifact"
-              desc="A gigantic totoro moster"
+              title="Eternal Soul"
+              img="https://assets.objkt.media/file/assets-003/QmXjMhKkRsLsQ23j6vzysujWQBHaXS7YQjBT6yf1SZ8aek/artifact"
+              desc="Fantasy Art"
             />
           </motion.div>
         </div>
