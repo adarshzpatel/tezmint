@@ -46,6 +46,8 @@ const CreateFungibleNft = ({ setStep, nftFile, nftThumbnail }: Props) => {
   const [txHash, setTxHash] = useState<string | undefined>(undefined);
   const [mintError, setMintError] = useState<string>("");
   const handleFungibleMint: SubmitHandler<FormData> = async (data) => {
+    setMintError("")
+    setCurrentMintStep(0);
     try {
       if (nftFile) {
         if (!currentAccountPkh) {

@@ -103,7 +103,7 @@ const MintProgress = ({ steps, loading,txHash,error,setShowMintProgress }: Props
   
         </div>
         <div className="">
-          <Button size="lg" onClick={()=>setShowMintProgress(false)} variant="danger" outline> Try Again ?</Button>
+          <Button size="lg" onClick={()=>{setShowMintProgress(false)}} variant="danger" outline> Try Again ?</Button>
           {/* <Button size="lg" variant="primary" >Show in Profile</Button> */}
         </div>
         </>
