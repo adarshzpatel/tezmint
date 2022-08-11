@@ -26,6 +26,7 @@
     "react-hook-form": "^7.33.1",
     "react-hot-toast": "^2.3.0",
     "react-icons": "^4.4.0",
+    "react-parallax-tilt": "^1.7.51",
     "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {

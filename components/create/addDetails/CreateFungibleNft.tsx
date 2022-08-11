@@ -35,15 +35,24 @@ const CreateFungibleNft = ({ setStep, nftFile, nftThumbnail }: Props) => {
   } = useForm<FormData>();
   const [currentMintStep, setCurrentMintStep] = useState<number>(0);
   const [showMintProgress, setShowMintProgress] = useState<boolean>(false);
-  const currentAccountPkh = useWalletStore((state) => state.accountPkh);
-  const sftContract = useContractStore((state) => state.sftContract);
+  const [currentAccountPkh, connectWallet] = useWalletStore((state) => [
+    state.accountPkh,
+    state.connectWallet,
+  ]);
+  const [sftContract, loadContracts] = useContractStore((state) => [
+    state.sftContract,
+    state.loadContracts,
+  ]);
   const [txHash, setTxHash] = useState<string | undefined>(undefined);
-
+  const [mintError, setMintError] = useState<string>("");
   const handleFungibleMint: SubmitHandler<FormData> = async (data) => {
     try {
       if (nftFile) {
+        if (!currentAccountPkh) {
+          await connectWallet(true);
+        }
         // get name and description from the form
-        const { name, description, tagString,editions } = data;
+        const { name, description, tagString, editions } = data;
         const tags = tagString.split(",");
         // get the mime type from the file
         const mimeType = nftFile?.type;
@@ -77,7 +86,8 @@ const CreateFungibleNft = ({ setStep, nftFile, nftThumbnail }: Props) => {
             const mintOp = await mintSFTOperation(
               "ipfs://" + metadataCid,
               sftContract,
-              currentAccountPkh,editions
+              currentAccountPkh,
+              editions
             );
             await mintOp?.confirmation(1);
             setTxHash(mintOp?.opHash);
@@ -88,16 +98,23 @@ const CreateFungibleNft = ({ setStep, nftFile, nftThumbnail }: Props) => {
           }
         }
       }
-    } catch (err) {
+    } catch (err:any) {
+      setMintError(err?.message ? err.message : "Oops, something went wrong")
       setCurrentMintStep(-1);
       console.error(err);
     }
   };
 
-  if(showMintProgress){
-    return <MintProgress loading={currentMintStep} steps={mintSteps} txHash={txHash} />
+  if (showMintProgress) {
+    return (
+      <MintProgress
+        loading={currentMintStep}
+        steps={mintSteps}
+        txHash={txHash}
+        error={mintError}
+      />
+    );
   }
-
 
   return (
     <div className="max-w-screen-lg mx-auto flex-wrap gap-8 flex justify-between">
@@ -119,9 +136,9 @@ const CreateFungibleNft = ({ setStep, nftFile, nftThumbnail }: Props) => {
             error={errors.name?.message}
             className="w-full"
           />
-            <Input
+          <Input
             label="Editions"
-            type='number'
+            type="number"
             min={1}
             placeholder="Enter the number of tokens you want to mint"
             {...register("editions", {
@@ -130,9 +147,9 @@ const CreateFungibleNft = ({ setStep, nftFile, nftThumbnail }: Props) => {
                 message: "This field cannot be empty.",
               },
               min: {
-                value:1,
-                message: "This value cannot be less than 0"
-              }
+                value: 1,
+                message: "This value cannot be less than 0",
+              },
             })}
             error={errors.editions?.message}
             className="w-full"
@@ -156,7 +173,7 @@ const CreateFungibleNft = ({ setStep, nftFile, nftThumbnail }: Props) => {
           />
           <div className="flex flex-wrap gap-4 mt-4">
             <Button
-              onClick={()=>setStep(1)}
+              onClick={() => setStep(1)}
               variant="primary"
               size="lg"
               outline

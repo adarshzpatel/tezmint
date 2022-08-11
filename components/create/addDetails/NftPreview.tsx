@@ -6,7 +6,8 @@ type Props = {
   name:string  
   thumbnail:string
   tagString:string 
-} 
+}
+
 
 const NftPreview = ({description,name,thumbnail,tagString}: Props) => {
   const tags = useMemo(()=>{
@@ -21,7 +22,7 @@ const NftPreview = ({description,name,thumbnail,tagString}: Props) => {
       <p className='text-gray-400 mt-1 whitespace-pre-wrap'>{description}</p>
       {tags.length !== 0 && <div className='flex flex-wrap gap-1.5 mt-2'>
         {tags.map((tag,index)=>(
-          <motion.div  animate={{scale:[0,1.1,1]}}   key={index} className='text-sm font-semibold py-1 px-3 tracking-wider text-blue-700 bg-blue-200 rounded-md'>{tag}</motion.div>
+          <motion.div animate={{scale:[0,1.1,1]}} key={index} className="tag">{tag}</motion.div>
         ))}
       </div>}
     </div>
@@ -29,3 +30,4 @@ const NftPreview = ({description,name,thumbnail,tagString}: Props) => {
 }
 
 export default NftPreview
+

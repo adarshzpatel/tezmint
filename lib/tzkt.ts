@@ -5,7 +5,6 @@ import { apiUrl } from "../tezos/config"
 export const getFa2Owned = async (tokenAddress:string,accountPkh:string):Promise<any> => {
   try{
     const _res = await axios.get(`${apiUrl}/tokens/balances?account=${accountPkh}&?standard=fa2`);
-    // console.log(_res.data);
     const filteredByToken = _res.data.filter((item:any)=>item.token.contract.address === tokenAddress);
     // console.log(filteredByToken);
     return filteredByToken;

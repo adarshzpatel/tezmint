@@ -33,14 +33,14 @@ export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
                     'bg-red-500 hover:bg-red-400 active:bg-red-600 text-white focus:ring-1 ring-white':
                     !outline &&  variant === 'danger',
                     'border-primary-500 hover:bg-primary-500/10 active:bg-primary-600/10 focus:bg-primary-600/10 focus:outline-none focus:ring-0 text-primary-600 ': outline && variant === 'primary',
-                    'border-gray-500 hover:bg-gray-500/10 text-gray-900 active:bg-gray-500/20 focus:bg-gray-500/10 focus:outline-none focus:ring-0': outline && variant === 'secondary',
+                    'border-slate-900 hover:bg-slate-500/10 text-slate-900 active:bg-slate-500/20 focus:bg-slate-500/10 focus:outline-none focus:ring-0': outline && variant === 'secondary',
                     'border-yellow-500 hover:bg-yellow-500 active:bg-yellow-500 focus:bg-yellow-500  focus:ring-0 ': outline && variant === 'warning',
-                    'border-red-500 hover:bg-red-600 active:bg-red-600 focus:bg-red-600  focus:ring-0 ': outline && variant === 'danger',
+                    'border-red-500 hover:bg-red-600/10 active:bg-red-600/10 focus:bg-red-600/10 text-red-600  focus:ring-0 ': outline && variant === 'danger',
                     'border ':outline,
                     'flex items-center  justify-center gap-2': (icon || loading) && children,
                     'px-3 py-1 text-sm ':size === 'sm',
                     'px-4 py-1.5 text-base':size === 'md',
-                    'px-12 py-3 text-lg':size === 'lg',
+                    'sm:px-12 px-6 py-2 sm:py-3 sm:text-lg':size === 'lg',
                     '': size === 'none'
                 },
                 'rounded-lg font-medium whitespace-nowrap cursor-pointer disabled:cursor-default font-display duration-200 ease-out hover:scale-[1.02] disabled:shadow-none  disabled:bg-gray-300 disabled:text-gray-900 active:scale-95  outline-none',
@@ -49,8 +49,8 @@ export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
             disabled={loading}
             {...rest}>
             {icon && !loading && icon}
-            {icon && loading && <Spinner size={size === 'lg' ? 'md' : 'sm'} variant={variant === 'secondary' && !outline ? 'black' : 'secondary'} />}
-            {!icon && loading && <Spinner size={size === 'lg' ? 'md' : 'sm'} variant={variant === 'secondary' && !outline ? 'black' : 'secondary'}/>}
+            {/* {icon && loading && <Spinner size={size === 'lg' ? 'md' : 'sm'} variant={variant === 'secondary' && !outline ? 'black' : 'secondary'} />}
+            {!icon && loading && <Spinner size={size === 'lg' ? 'md' : 'sm'} variant={variant === 'secondary' && !outline ? 'black' : 'secondary'}/>} */}
             {children}
         </button>
     );

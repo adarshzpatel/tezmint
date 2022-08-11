@@ -1,15 +1,14 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { SubmitHandler, useForm, UseFormRegister } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../../design/Button";
 import Heading from "../../design/Heading";
 import { Input } from "../../design/Input";
 import { TextArea } from "../../design/TextArea";
 import NftPreview from "./NftPreview";
-import { Fa2NftMetadata } from "../types";
 import { createNftMetadata } from "../../../lib/utils";
 import useWalletStore from "../../../tezos/useWalletStore";
 import { storeToIpfs } from "../../../lib/nftStorage";
-import toast from "react-hot-toast";
+
 import { mintNFTOperation } from "../../../lib/fa2operations";
 import useContractStore from "../../../tezos/useContractStore";
 import MintProgress from "./MintProgress";
@@ -41,13 +40,18 @@ const CreateNft = ({ nftFile, nftThumbnail,setStep }: Props) => {
   } = useForm<FormData>();
   const [currentMintStep, setCurrentMintStep] = useState<number>(0);
   const [showMintProgress, setShowMintProgress] = useState<boolean>(false);
-  const currentAccountPkh = useWalletStore((state) => state.accountPkh);
-  const nftContract = useContractStore((state) => state.nftContract);
-    const [txHash,setTxHash] = useState<string | undefined>(undefined);
+  const [currentAccountPkh,connectWallet] = useWalletStore((state) => [state.accountPkh,state.connectWallet]);
+  const [nftContract,loadContracts] = useContractStore((state) => [state.nftContract,state.loadContracts]);
+  const [txHash,setTxHash] = useState<string | undefined>(undefined);
+  const [mintError,setMintError] = useState<string>("");
 
   const handleMint: SubmitHandler<FormData> = async (data) => {
     try {
       if (nftFile) {
+        if(!currentAccountPkh){
+          await connectWallet(true);
+        } 
+          
         // get name and description from the form
         const { name, description, tagString } = data;
         const tags = tagString.split(",");
@@ -58,6 +62,7 @@ const CreateNft = ({ nftFile, nftThumbnail,setStep }: Props) => {
         console.log("Uploading file ");
         const fileCid = await storeToIpfs(nftFile);
         console.log("File uploaded successfully ");
+        setCurrentMintStep(1)
         if (fileCid) {
           const metadata = createNftMetadata({
             name,
@@ -71,13 +76,15 @@ const CreateNft = ({ nftFile, nftThumbnail,setStep }: Props) => {
           const metadataBlob = new Blob([JSON.stringify(metadata)]);
           console.log({ metadataBlob });
           // upload metadata to ipfs
-          setCurrentMintStep(1);
           console.log("Uploading metadata");
           const metadataCid = await storeToIpfs(metadataBlob);
           console.log("Metadata uploaded successfully");
           // mint the nft
           console.log("Minting nft");
           console.log({ metadataCid, fileCid });
+          if(!nftContract){
+            await loadContracts();
+          }
           if (nftContract && metadataCid) {
             setCurrentMintStep(2);
             const mintOp = await mintNFTOperation(
@@ -94,14 +101,15 @@ const CreateNft = ({ nftFile, nftThumbnail,setStep }: Props) => {
           }
         }
       }
-    } catch (err) {
+    } catch (err:any) {
+      setMintError(err?.message ? err.message : "Oops, something went wrong please try again");
       setCurrentMintStep(-1);
       console.error(err);
     }
   };
 
   if(showMintProgress){
-    return <MintProgress loading={currentMintStep} steps={mintSteps} txHash={txHash} />
+    return <MintProgress loading={currentMintStep} steps={mintSteps} txHash={txHash} error={mintError} />
   }
 
   return (

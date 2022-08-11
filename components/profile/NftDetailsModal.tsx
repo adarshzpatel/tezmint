@@ -16,11 +16,12 @@ const NftDetailsModal = ({
   tokenData,
 }: NftDetailsModalProps) => {
   console.log(tokenData);
-  const {metadata} = tokenData;
+  const { balance, token } = tokenData;
+  const { metadata } = token;
   return (
     <Modal isOpen={isOpen} closeModal={() => setIsOpen(false)}>
-      <div className="flex gap-8">
-        <div className="rounded-lg flex items-center justify-center bg-slate-200 shadow-inner overflow-hidden w-80">
+      <div className="grid md:grid-cols-2 gap-8">
+        <div className="rounded-lg flex items-center justify-center bg-slate-200 shadow-inner overflow-hidden max-w-sm aspect-square ">
           <img
             src={ipfsToGatewayLink(metadata?.thumbnailUri)}
             alt="image"
@@ -29,9 +30,11 @@ const NftDetailsModal = ({
         </div>
         <div>
           <h6 className="text-xl font-semibold">{metadata?.name}</h6>
-          <p className="mt-2">{metadata?.description}</p>
+          <p className="mt-2 whitespace-pre-wrap">{metadata?.description}</p>
           <div className="mt-4">
-            <p className="font-bold uppercase text-sm">Creators</p>
+            <p className="font-bold text-gray-500 uppercase text-sm">
+              Creators
+            </p>
             {metadata?.creators.map((item: string, index: number) => (
               <Tooltip key={index} content="Click to copy address">
                 <button
@@ -45,11 +48,15 @@ const NftDetailsModal = ({
             ))}
           </div>
           <div className="mt-4">
-            <p className="font-bold uppercase text-sm">File Type</p>
+            <p className="font-bold text-gray-500 uppercase text-sm">
+              File Type
+            </p>
             {metadata?.formats[0].mimeType}
           </div>
           <div className="mt-4">
-            <p className="font-bold uppercase text-sm">Asset Link</p>
+            <p className="font-bold text-gray-500 uppercase text-sm">
+              Asset Link
+            </p>
             <Tooltip content="Click to copy link">
               <button
                 className="flex items-center gap-1"
@@ -63,18 +70,26 @@ const NftDetailsModal = ({
             </Tooltip>
           </div>
           <div className="mt-4">
-            <p className="font-bold uppercase text-sm">Contract</p>
+            <p className="font-bold text-gray-500 uppercase text-sm">
+              Contract
+            </p>
             <Tooltip content="Click to copy address">
               <button
                 className="flex items-center gap-1"
                 onClick={() => copyToClipboard(tokenData?.contract?.address)}
               >
-                {tokenData?.contract?.address.slice(0,6) +
+                {tokenData?.contract?.address.slice(0, 6) +
                   "..." +
                   tokenData?.contract?.address.slice(-4, -1)}
                 <FiCopy />
               </button>
             </Tooltip>
+          </div>
+          <div className="mt-4">
+            <p className="font-bold text-gray-500 uppercase text-sm">
+              Tokens Owned
+            </p>
+            {balance}
           </div>
         </div>
       </div>

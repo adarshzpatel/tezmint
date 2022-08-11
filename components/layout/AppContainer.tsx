@@ -10,13 +10,13 @@ type Props = {
 
 const AppContainer = ({ showNav=true, children }: Props) => {
   return (
-    <div className="gradient-bg bg-cover bg-center min-h-screen">
+    <div className="gradient-bg bg-cover bg-center min-h-screen w-screen overflow-hidden">
       <Toaster position="bottom-right"/>
       {showNav && <Navbar />}
       <div
         
         className={clsx(
-          "mx-auto p-6  "
+          "mx-auto p-4 md:p-6 "
         )}
       >
         {children}

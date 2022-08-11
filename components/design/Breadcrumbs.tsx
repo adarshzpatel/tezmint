@@ -9,12 +9,12 @@ type BreadcrumbsProps = {
 
 const Breadcrumbs = ({ data, active }: BreadcrumbsProps) => {
   return (
-    <div className="flex items-center select-none gap-2 sm:gap-3 text-sm">
+    <div className="flex items-center select-none gap-1 sm:gap-3 text-sm">
       {data.map((item, index) => (
-        <div key={index} className="flex items-center gap-3">
+        <div key={index} className="flex text-xs sm:text-base text-center items-center gap-1 sm:gap-3">
           <p
             className={clsx({
-              "text-primary-600 text-xs sm:text-base font-medium": index === active,
+              "text-primary-600 font-medium": index === active,
             })}
           >
             {item}

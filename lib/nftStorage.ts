@@ -1,5 +1,5 @@
 import { NFTStorage } from "nft.storage";
-import toast from "react-hot-toast";
+
 
 const token = process.env.NEXT_PUBLIC_NFT_STORAGE_TOKEN;
 
@@ -10,6 +10,6 @@ export const storeToIpfs = async (data: Blob): Promise<string | undefined> => {
     const cid = await client.storeBlob(data);
     return cid;
   } catch (err) {
-    console.error(err);
+    throw Error("Failed to upload file to ipfs")
   }
 };

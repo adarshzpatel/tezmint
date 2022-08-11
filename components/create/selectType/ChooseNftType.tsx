@@ -80,7 +80,7 @@ const ChooseNftType = ({ nftType, setStep, setType }: Props) => {
         </div>
         <div className="my-8">
           <a
-            href={"#"}
+            href={"https://tezos.com/non-fungible-token/"}
             target="_blank"
             rel="noreferrer"
             className="text-center text-lg flex items-center gap-2 hover:text-primary-600 hover:underline underline-offset-4 duration-200 ease-out"

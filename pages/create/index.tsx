@@ -19,6 +19,7 @@ const Create: NextPage = (props: Props) => {
   const [nftFile, setNftFile] = useState<File | null>(null);
   const [nftThumbnail, setNftThumbnail] = useState<string>("");
 
+
   const renderSteps = () => {
     switch (step) {
       case 1:

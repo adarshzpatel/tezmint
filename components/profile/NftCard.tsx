@@ -6,12 +6,13 @@ type Props = {
   imgSrc: string;
   name: string;
   description: string;
+  amount?:number
 };
 
-const NftCard = ({ name, imgSrc, description }: Props) => {
+const NftCard = ({ name, imgSrc, description,amount }: Props) => {
   return (
     <Tooltip content="Click to view details">
-      <div className="rounded-lg max-h-min cursor-pointer hover:shadow-xl hover:-translate-y-2 duration-200 ease-out border p-3">
+      <div className="rounded-lg hover:border-gray-600 max-h-min cursor-pointer hover:shadow-xl hover:-translate-y-2 duration-200 ease-out border p-3">
         <div className="aspect-square rounded-md flex items-center justify-center bg-gray-100 shadow-inner overflow-hidden">
           <img
             className=" object-cover object-center w-full"
@@ -23,6 +24,7 @@ const NftCard = ({ name, imgSrc, description }: Props) => {
         <p className="text-gray-400 text-sm mt-1 whitespace-pre-wrap">
           {description}
         </p>
+      {amount && <p className="text-gray-400 text-sm mt-1 ">Editions : {amount}</p>}
       </div>
     </Tooltip>
   );

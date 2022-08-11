@@ -36,7 +36,7 @@ const WalletInfo = ({ balance, address, network }: Props) => {
                 <FiCopy className="h-10 rounded-md active:scale-95 duration-300 ease-out bg-blue-300/50 hover:bg-blue-300 border border-blue-500 text-blue-600 w-10 p-2" />
               </button>
             </Tooltip>
-            <p className="bg-slate-300/50  py-2 px-3 rounded-md">{address}</p>
+            <p className="bg-slate-300/50 py-2 px-3  truncate rounded-md">{window.innerWidth < 640 ? address.slice(0,6) + "..." + address.slice(-6,-1) : address }</p>
           </Card>
         </div>
       )}

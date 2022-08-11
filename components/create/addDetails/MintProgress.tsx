@@ -1,11 +1,9 @@
 import clsx from "clsx";
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ReactConfetti from "react-confetti";
-import Confetti from "react-confetti/dist/types/Confetti";
-import { FiCheck, FiCheckCircle, FiChevronRight, FiExternalLink } from "react-icons/fi";
+import { FiExternalLink } from "react-icons/fi";
 import { HiCheck } from "react-icons/hi";
-import Breadcrumbs from "../../design/Breadcrumbs";
 import Button from "../../design/Button";
 import NextLink from "../../design/NextLink";
 import Spinner from "../../design/Spinner";
@@ -14,13 +12,10 @@ type Props = {
   steps: string[];
   loading: number; // index which idenfies which step is being donet
   txHash:string | undefined
+  error:string
 };
 
-const MintProgress = ({ steps, loading,txHash }: Props) => {
-  if(loading === -1) {
-    return <div> Oops ! Something went wrong , please try again. </div>
-  }
-
+const MintProgress = ({ steps, loading,txHash,error }: Props) => {
 
   return (
     <div className="mx-auto max-w-screen-md flex flex-col gap-8 items-center justify-center">
@@ -83,14 +78,31 @@ const MintProgress = ({ steps, loading,txHash }: Props) => {
       {loading === steps.length && txHash !== undefined && (
         <>
         <div className="flex gap-4 items-center bg-white px-4 text-lg font-semibold py-4 rounded-lg shadow-xl ring-1 ring-green-500  w-full ">
-          <HiCheck className="bg-green-500 rounded-full text-white p-1 h-8 w-8"/>Your NFT has been minted successfully ! 
-          <NextLink href={"https://jakartanet.tzkt.io/"+txHash}>
+          <HiCheck className="bg-green-500 rounded-full text-white p-1 h-8 w-8 "/>
+          <p className="flex-1">
+          Your NFT has been minted successfully ! 
+          </p>
+          <a target="_blank" rel="noreferrer" href={"https://jakartanet.tzkt.io/"+txHash}>
           <Button  className="ml-auto flex items-center gap-2">View Transaction<FiExternalLink className="h-5 w-5"/></Button>
-          </NextLink>
+          </a>
         </div>
         <div className="flex justify-between w-full">
-          <Button size="lg" variant="primary" outline>Mint another NFT</Button>
+          <Button size="lg"  onClick={()=>window.location.reload()} variant="primary" outline>Mint another NFT</Button>
+          <NextLink href={"/profile"}>
           <Button size="lg" variant="primary" >Show in Profile</Button>
+          </NextLink>
+        </div>
+        </>
+      )}
+       {loading === -1 && (
+        <>
+        <div className="flex gap-4 items-center text-red-500 bg-white px-4 text-lg font-semibold py-4 rounded-lg shadow-xl ring-1 ring-red-500  w-full ">
+          <HiCheck className="bg-red-500  rounded-full text-white p-1 h-8 w-8"/> {error}
+  
+        </div>
+        <div className="">
+          <Button size="lg" onClick={()=>window.location.reload()} variant="danger" outline> Try Again ?</Button>
+          {/* <Button size="lg" variant="primary" >Show in Profile</Button> */}
         </div>
         </>
       )}
