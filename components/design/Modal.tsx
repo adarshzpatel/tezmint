@@ -27,7 +27,7 @@ const Modal: React.FC<Props> = ({ isOpen, closeModal,children,size='md' }) => {
                         enter="ease-in "
                         enterFrom="opacity-0"
                         enterTo="opacity-100 "
-                        leave="ease-in duration-200"
+                        leave="ease-in duration-100"
                         leaveFrom="opacity-100"
                         leaveTo=" opacity-0">
                         <Dialog.Overlay className="fixed inset-0 backdrop-blur-sm backdrop-brightness-50" />
@@ -39,7 +39,7 @@ const Modal: React.FC<Props> = ({ isOpen, closeModal,children,size='md' }) => {
                     </span>
                     <Transition.Child
                         as={Fragment}
-                        enter="ease-out duration-300"
+                        enter="ease-out duration-100"
                         enterFrom="translate-y-40 opacity-0 scale-95"
                         enterTo="opacity-100 scale-100"
                         leave="ease-in duration-200"

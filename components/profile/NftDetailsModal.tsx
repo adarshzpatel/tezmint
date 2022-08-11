@@ -36,7 +36,7 @@ const NftDetailsModal = ({
               Creators
             </p>
             {metadata?.creators.map((item: string, index: number) => (
-              <Tooltip key={index} content="Click to copy address">
+              <Tooltip key={index} content="Click to copy address" >
                 <button
                   onClick={() => copyToClipboard(item)}
                   className="flex items-center gap-1"

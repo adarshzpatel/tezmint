@@ -111,7 +111,7 @@ const Profile = () => {
 
             <Tab.Panels className="rounded-lg p-4">
               <Tab.Panel className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
-                {nftsMinted?.map((item: any,index:number) => (
+                {nftsMinted.length > 0 ? nftsMinted?.map((item: any,index:number) => (
                   <motion.div
                     animate={{y:[100,0],opacity:[0,1],scale:[0.6,1]}}
                     transition={{delay:0.2*index}}
@@ -127,10 +127,10 @@ const Profile = () => {
                       description={item?.token?.metadata?.description}
                     />
                   </motion.div>
-                ))}
+                )): "No Nfts found"}
               </Tab.Panel>
               <Tab.Panel className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
-                {sftsMinted?.map((item: any,index:number) => (
+                {sftsMinted.length > 0 ? sftsMinted?.map((item: any,index:number) => (
                   <motion.div
                   animate={{y:[100,0],opacity:[0,1],scale:[0.6,1]}}
                   transition={{delay:0.2*index}}
@@ -146,8 +146,9 @@ const Profile = () => {
                       description={item?.token?.metadata?.description}
                       amount={item?.balance}
                     />
+                    
                   </motion.div>
-                ))}
+                )):"No SFTs found"}
               </Tab.Panel>
             </Tab.Panels>
           </Tab.Group>
