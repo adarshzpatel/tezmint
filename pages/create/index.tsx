@@ -67,7 +67,7 @@ const Create: NextPage = (props: Props) => {
   };
 
   return (
-    <div>
+    <div className="">
       <div className="mb-4 flex justify-center">
         <Breadcrumbs
           data={["Choose NFT Type", "Upload Image", "Add NFT Details"]}
